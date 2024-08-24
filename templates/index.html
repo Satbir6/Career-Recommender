@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Career Recommender</title>
+    <!-- Include Bulma CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css"
+    />
+  </head>
+  <body>
+    <section class="section">
+      <div class="container">
+        <h1 class="title has-text-centered">Career Recommendation System</h1>
+
+        <div class="box">
+          <form method="POST">
+            <div class="field">
+              <label class="label" for="skills"
+                >Select your skills (hold CTRL or CMD to select
+                multiple):</label
+              >
+              <div class="control">
+                <div class="select is-multiple">
+                  <select
+                    id="skills"
+                    name="skills"
+                    multiple
+                    size="10"
+                    class="is-fullwidth"
+                  >
+                    {% for skill in skills %}
+                    <option value="{{ skill }}">{{ skill }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="label" for="industry"
+                >Filter by Industry (optional):</label
+              >
+              <div class="control">
+                <input
+                  class="input"
+                  type="text"
+                  id="industry"
+                  name="industry"
+                  placeholder="e.g. Technology"
+                />
+              </div>
+            </div>
+
+            <div class="field is-grouped is-grouped-centered">
+              <div class="control">
+                <button class="button is-primary" type="submit">
+                  Get Recommendations
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        {% if jobs %}
+        <div class="box">
+          <h2 class="subtitle">Recommended Job Profiles:</h2>
+          <ul>
+            {% for job in jobs %}
+            <li>{{ job }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+        {% endif %}
+      </div>
+    </section>
+  </body>
+</html>
