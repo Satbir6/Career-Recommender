@@ -38,10 +38,34 @@ def load_and_prepare_data(file_path):
 
 
 skill_to_jobs_mapping = load_and_prepare_data("career_recommender.csv")
-available_skills = sorted(
-    skill_to_jobs_mapping["Skill"].unique()
-)  # Get the list of skills
-print("Skill to job mapping initialized")
+
+# Categorize skills
+skill_categories = {
+    "Programming Languages": ["java", "python", "c++", "c#", "javascript", "sql"],
+    "Web Development": ["html", "css", "javascript", "react.js", "angular", "node.js"],
+    "Data Science": [
+        "machine learning",
+        "data analysis",
+        "data visualization",
+        "r",
+        "sql",
+    ],
+    "Networking & Security": ["network security", "ethical hacking", "cybersecurity"],
+    "Project Management": ["project management", "agile", "scrum"],
+    "Marketing & Sales": ["digital marketing", "content creation", "seo", "salesforce"],
+    "Others": ["photoshop", "excel", "accounting", "business analysis"],
+}
+
+# List of industries
+industries = [
+    "Technology",
+    "Finance",
+    "Healthcare",
+    "Education",
+    "Manufacturing",
+    "Marketing",
+    "Others",
+]
 
 
 # Step 3: Implement the Recommendation Logic
@@ -53,11 +77,9 @@ def recommend_jobs(user_skills, skill_to_jobs_mapping, industry=None):
             jobs = skill_to_jobs_mapping[skill_to_jobs_mapping["Skill"] == skill][
                 "Job_Titles"
             ].values[0]
-            # Re-enable the industry filter
             if industry:
                 jobs = [job for job in jobs if industry.lower() in job.lower()]
             recommended_jobs.extend(jobs)
-    print(f"Recommended jobs: {recommended_jobs}")
     return list(set(recommended_jobs))
 
 
@@ -70,7 +92,12 @@ def index():
         industry = request.form.get("industry")
         print(f"Industry: {industry}")
         recommended_jobs = recommend_jobs(user_skills, skill_to_jobs_mapping, industry)
-    return render_template("index.html", skills=available_skills, jobs=recommended_jobs)
+    return render_template(
+        "index.html",
+        skill_categories=skill_categories,
+        industries=industries,
+        jobs=recommended_jobs,
+    )
 
 
 if __name__ == "__main__":

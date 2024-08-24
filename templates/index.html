@@ -9,6 +9,25 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css"
     />
+    <style>
+      .skills-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+      }
+      .skills-container .box {
+        flex: 0 0 08%;
+        margin-bottom: 20px;
+      }
+      .skills-container .select {
+        width: 100%;
+      }
+      @media (max-width: 768px) {
+        .skills-container .box {
+          flex: 0 0 100%;
+        }
+      }
+    </style>
   </head>
   <body>
     <section class="section">
@@ -18,39 +37,37 @@
         <div class="box">
           <form method="POST">
             <div class="field">
-              <label class="label" for="skills"
+              <label class="label"
                 >Select your skills (hold CTRL or CMD to select
                 multiple):</label
               >
-              <div class="control">
+            </div>
+            <div class="skills-container">
+              {% for category, skills in skill_categories.items() %}
+              <div class="box">
+                <h2 class="subtitle">{{ category }}</h2>
                 <div class="select is-multiple">
-                  <select
-                    id="skills"
-                    name="skills"
-                    multiple
-                    size="10"
-                    class="is-fullwidth"
-                  >
+                  <select name="skills" multiple size="5">
                     {% for skill in skills %}
                     <option value="{{ skill }}">{{ skill }}</option>
                     {% endfor %}
                   </select>
                 </div>
               </div>
+              {% endfor %}
             </div>
 
             <div class="field">
-              <label class="label" for="industry"
-                >Filter by Industry (optional):</label
-              >
+              <label class="label">Filter by Industry (optional):</label>
               <div class="control">
-                <input
-                  class="input"
-                  type="text"
-                  id="industry"
-                  name="industry"
-                  placeholder="e.g. Technology"
-                />
+                <div class="select">
+                  <select name="industry">
+                    <option value="">--Select Industry--</option>
+                    {% for industry in industries %}
+                    <option value="{{ industry }}">{{ industry }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
               </div>
             </div>
 
